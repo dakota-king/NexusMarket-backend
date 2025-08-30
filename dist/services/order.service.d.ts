@@ -1,0 +1,422 @@
+import { OrderStatus } from '../types';
+export declare class OrderService {
+    static getCartItems(userId: string): Promise<({
+        product: {
+            id: string;
+            isActive: boolean;
+            createdAt: Date;
+            updatedAt: Date;
+            vendorId: string;
+            status: import(".prisma/client").$Enums.ProductStatus;
+            rating: import("@prisma/client/runtime/library").Decimal | null;
+            title: string;
+            slug: string;
+            description: string;
+            basePrice: import("@prisma/client/runtime/library").Decimal;
+            categoryId: string;
+            totalReviews: number;
+            totalSold: number;
+            weight: import("@prisma/client/runtime/library").Decimal | null;
+            dimensions: import("@prisma/client/runtime/library").JsonValue | null;
+            tags: string[];
+            metadata: import("@prisma/client/runtime/library").JsonValue;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: string;
+        productId: string;
+        variantId: string | null;
+        quantity: number;
+    })[]>;
+    static calculateOrderTotal(cartItems: any[], shippingCost?: number): {
+        subtotal: number;
+        shipping: number;
+        tax: number;
+        total: number;
+    };
+    static createOrder(userId: string): Promise<{
+        vendor: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string;
+            rating: import("@prisma/client/runtime/library").Decimal | null;
+            address: import("@prisma/client/runtime/library").JsonValue | null;
+            storeName: string;
+            slug: string;
+            description: string | null;
+            logo: string | null;
+            coverImage: string | null;
+            isApproved: boolean;
+            totalSales: import("@prisma/client/runtime/library").Decimal;
+            stripeAccountId: string | null;
+            businessEmail: string | null;
+            businessPhone: string | null;
+            settings: import("@prisma/client/runtime/library").JsonValue;
+            commissionRate: import("@prisma/client/runtime/library").Decimal;
+        };
+        items: {
+            id: string;
+            createdAt: Date;
+            productId: string;
+            variantId: string | null;
+            quantity: number;
+            orderId: string;
+            unitPrice: import("@prisma/client/runtime/library").Decimal;
+            totalPrice: import("@prisma/client/runtime/library").Decimal;
+            productSnapshot: import("@prisma/client/runtime/library").JsonValue;
+        }[];
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        orderNumber: string;
+        userId: string;
+        vendorId: string;
+        status: import(".prisma/client").$Enums.OrderStatus;
+        paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        subtotal: import("@prisma/client/runtime/library").Decimal;
+        shippingCost: import("@prisma/client/runtime/library").Decimal;
+        tax: import("@prisma/client/runtime/library").Decimal;
+        total: import("@prisma/client/runtime/library").Decimal;
+        stripePaymentIntentId: string | null;
+        stripeTransferId: string | null;
+        notes: string | null;
+        estimatedDelivery: Date | null;
+        deliveredAt: Date | null;
+    }>;
+    private static generateOrderNumber;
+    static getOrder(orderId: string, userId: string): Promise<{
+        user: {
+            id: string;
+            clerkId: string;
+            email: string;
+            role: import(".prisma/client").$Enums.UserRole;
+            firstName: string;
+            lastName: string;
+            avatarUrl: string | null;
+            isActive: boolean;
+            lastLoginAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        vendor: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string;
+            rating: import("@prisma/client/runtime/library").Decimal | null;
+            address: import("@prisma/client/runtime/library").JsonValue | null;
+            storeName: string;
+            slug: string;
+            description: string | null;
+            logo: string | null;
+            coverImage: string | null;
+            isApproved: boolean;
+            totalSales: import("@prisma/client/runtime/library").Decimal;
+            stripeAccountId: string | null;
+            businessEmail: string | null;
+            businessPhone: string | null;
+            settings: import("@prisma/client/runtime/library").JsonValue;
+            commissionRate: import("@prisma/client/runtime/library").Decimal;
+        };
+        items: ({
+            product: {
+                id: string;
+                isActive: boolean;
+                createdAt: Date;
+                updatedAt: Date;
+                vendorId: string;
+                status: import(".prisma/client").$Enums.ProductStatus;
+                rating: import("@prisma/client/runtime/library").Decimal | null;
+                title: string;
+                slug: string;
+                description: string;
+                basePrice: import("@prisma/client/runtime/library").Decimal;
+                categoryId: string;
+                totalReviews: number;
+                totalSold: number;
+                weight: import("@prisma/client/runtime/library").Decimal | null;
+                dimensions: import("@prisma/client/runtime/library").JsonValue | null;
+                tags: string[];
+                metadata: import("@prisma/client/runtime/library").JsonValue;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            productId: string;
+            variantId: string | null;
+            quantity: number;
+            orderId: string;
+            unitPrice: import("@prisma/client/runtime/library").Decimal;
+            totalPrice: import("@prisma/client/runtime/library").Decimal;
+            productSnapshot: import("@prisma/client/runtime/library").JsonValue;
+        })[];
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        orderNumber: string;
+        userId: string;
+        vendorId: string;
+        status: import(".prisma/client").$Enums.OrderStatus;
+        paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        subtotal: import("@prisma/client/runtime/library").Decimal;
+        shippingCost: import("@prisma/client/runtime/library").Decimal;
+        tax: import("@prisma/client/runtime/library").Decimal;
+        total: import("@prisma/client/runtime/library").Decimal;
+        stripePaymentIntentId: string | null;
+        stripeTransferId: string | null;
+        notes: string | null;
+        estimatedDelivery: Date | null;
+        deliveredAt: Date | null;
+    }>;
+    static getUserOrders(userId: string, page?: number, limit?: number): Promise<{
+        orders: ({
+            vendor: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                userId: string;
+                rating: import("@prisma/client/runtime/library").Decimal | null;
+                address: import("@prisma/client/runtime/library").JsonValue | null;
+                storeName: string;
+                slug: string;
+                description: string | null;
+                logo: string | null;
+                coverImage: string | null;
+                isApproved: boolean;
+                totalSales: import("@prisma/client/runtime/library").Decimal;
+                stripeAccountId: string | null;
+                businessEmail: string | null;
+                businessPhone: string | null;
+                settings: import("@prisma/client/runtime/library").JsonValue;
+                commissionRate: import("@prisma/client/runtime/library").Decimal;
+            };
+            items: ({
+                product: {
+                    id: string;
+                    isActive: boolean;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    vendorId: string;
+                    status: import(".prisma/client").$Enums.ProductStatus;
+                    rating: import("@prisma/client/runtime/library").Decimal | null;
+                    title: string;
+                    slug: string;
+                    description: string;
+                    basePrice: import("@prisma/client/runtime/library").Decimal;
+                    categoryId: string;
+                    totalReviews: number;
+                    totalSold: number;
+                    weight: import("@prisma/client/runtime/library").Decimal | null;
+                    dimensions: import("@prisma/client/runtime/library").JsonValue | null;
+                    tags: string[];
+                    metadata: import("@prisma/client/runtime/library").JsonValue;
+                };
+            } & {
+                id: string;
+                createdAt: Date;
+                productId: string;
+                variantId: string | null;
+                quantity: number;
+                orderId: string;
+                unitPrice: import("@prisma/client/runtime/library").Decimal;
+                totalPrice: import("@prisma/client/runtime/library").Decimal;
+                productSnapshot: import("@prisma/client/runtime/library").JsonValue;
+            })[];
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            orderNumber: string;
+            userId: string;
+            vendorId: string;
+            status: import(".prisma/client").$Enums.OrderStatus;
+            paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            subtotal: import("@prisma/client/runtime/library").Decimal;
+            shippingCost: import("@prisma/client/runtime/library").Decimal;
+            tax: import("@prisma/client/runtime/library").Decimal;
+            total: import("@prisma/client/runtime/library").Decimal;
+            stripePaymentIntentId: string | null;
+            stripeTransferId: string | null;
+            notes: string | null;
+            estimatedDelivery: Date | null;
+            deliveredAt: Date | null;
+        })[];
+        pagination: {
+            page: number;
+            limit: number;
+            total: number;
+            pages: number;
+        };
+    }>;
+    static getVendorOrders(vendorId: string, page?: number, limit?: number): Promise<{
+        orders: ({
+            user: {
+                id: string;
+                clerkId: string;
+                email: string;
+                role: import(".prisma/client").$Enums.UserRole;
+                firstName: string;
+                lastName: string;
+                avatarUrl: string | null;
+                isActive: boolean;
+                lastLoginAt: Date | null;
+                createdAt: Date;
+                updatedAt: Date;
+            };
+            items: ({
+                product: {
+                    id: string;
+                    isActive: boolean;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    vendorId: string;
+                    status: import(".prisma/client").$Enums.ProductStatus;
+                    rating: import("@prisma/client/runtime/library").Decimal | null;
+                    title: string;
+                    slug: string;
+                    description: string;
+                    basePrice: import("@prisma/client/runtime/library").Decimal;
+                    categoryId: string;
+                    totalReviews: number;
+                    totalSold: number;
+                    weight: import("@prisma/client/runtime/library").Decimal | null;
+                    dimensions: import("@prisma/client/runtime/library").JsonValue | null;
+                    tags: string[];
+                    metadata: import("@prisma/client/runtime/library").JsonValue;
+                };
+            } & {
+                id: string;
+                createdAt: Date;
+                productId: string;
+                variantId: string | null;
+                quantity: number;
+                orderId: string;
+                unitPrice: import("@prisma/client/runtime/library").Decimal;
+                totalPrice: import("@prisma/client/runtime/library").Decimal;
+                productSnapshot: import("@prisma/client/runtime/library").JsonValue;
+            })[];
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            orderNumber: string;
+            userId: string;
+            vendorId: string;
+            status: import(".prisma/client").$Enums.OrderStatus;
+            paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            subtotal: import("@prisma/client/runtime/library").Decimal;
+            shippingCost: import("@prisma/client/runtime/library").Decimal;
+            tax: import("@prisma/client/runtime/library").Decimal;
+            total: import("@prisma/client/runtime/library").Decimal;
+            stripePaymentIntentId: string | null;
+            stripeTransferId: string | null;
+            notes: string | null;
+            estimatedDelivery: Date | null;
+            deliveredAt: Date | null;
+        })[];
+        pagination: {
+            page: number;
+            limit: number;
+            total: number;
+            pages: number;
+        };
+    }>;
+    static updateOrderStatus(orderId: string, newStatus: OrderStatus, userId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        orderNumber: string;
+        userId: string;
+        vendorId: string;
+        status: import(".prisma/client").$Enums.OrderStatus;
+        paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        subtotal: import("@prisma/client/runtime/library").Decimal;
+        shippingCost: import("@prisma/client/runtime/library").Decimal;
+        tax: import("@prisma/client/runtime/library").Decimal;
+        total: import("@prisma/client/runtime/library").Decimal;
+        stripePaymentIntentId: string | null;
+        stripeTransferId: string | null;
+        notes: string | null;
+        estimatedDelivery: Date | null;
+        deliveredAt: Date | null;
+    }>;
+    static cancelOrder(orderId: string, userId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        orderNumber: string;
+        userId: string;
+        vendorId: string;
+        status: import(".prisma/client").$Enums.OrderStatus;
+        paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        subtotal: import("@prisma/client/runtime/library").Decimal;
+        shippingCost: import("@prisma/client/runtime/library").Decimal;
+        tax: import("@prisma/client/runtime/library").Decimal;
+        total: import("@prisma/client/runtime/library").Decimal;
+        stripePaymentIntentId: string | null;
+        stripeTransferId: string | null;
+        notes: string | null;
+        estimatedDelivery: Date | null;
+        deliveredAt: Date | null;
+    }>;
+    static getOrderAnalytics(vendorId: string, startDate: Date, endDate: Date): Promise<{
+        totalOrders: number;
+        totalRevenue: number | import("@prisma/client/runtime/library").Decimal;
+        averageOrderValue: number;
+        period: {
+            startDate: Date;
+            endDate: Date;
+        };
+    }>;
+    static getOrderStats(vendorId: string): Promise<{
+        totalOrders: number;
+        pendingOrders: number;
+        completedOrders: number;
+        totalRevenue: number | import("@prisma/client/runtime/library").Decimal;
+    }>;
+    static processFulfillment(orderId: string, trackingNumber: string, userId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        orderNumber: string;
+        userId: string;
+        vendorId: string;
+        status: import(".prisma/client").$Enums.OrderStatus;
+        paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        subtotal: import("@prisma/client/runtime/library").Decimal;
+        shippingCost: import("@prisma/client/runtime/library").Decimal;
+        tax: import("@prisma/client/runtime/library").Decimal;
+        total: import("@prisma/client/runtime/library").Decimal;
+        stripePaymentIntentId: string | null;
+        stripeTransferId: string | null;
+        notes: string | null;
+        estimatedDelivery: Date | null;
+        deliveredAt: Date | null;
+    }>;
+    static markAsDelivered(orderId: string, userId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        orderNumber: string;
+        userId: string;
+        vendorId: string;
+        status: import(".prisma/client").$Enums.OrderStatus;
+        paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        subtotal: import("@prisma/client/runtime/library").Decimal;
+        shippingCost: import("@prisma/client/runtime/library").Decimal;
+        tax: import("@prisma/client/runtime/library").Decimal;
+        total: import("@prisma/client/runtime/library").Decimal;
+        stripePaymentIntentId: string | null;
+        stripeTransferId: string | null;
+        notes: string | null;
+        estimatedDelivery: Date | null;
+        deliveredAt: Date | null;
+    }>;
+    private static handleStatusChange;
+}
+//# sourceMappingURL=order.service.d.ts.map
